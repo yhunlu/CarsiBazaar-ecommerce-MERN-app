@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 const Rate = ({ value, starRange, color }) => {
   return (
@@ -20,11 +19,6 @@ const Rate = ({ value, starRange, color }) => {
 
 Rate.defaultProps = {
   color: "#ffa600",
-};
-
-Rate.propTypes = {
-  value: PropTypes.number.isRequired,
-  color: PropTypes.string,
 };
 
 export default Rate;
