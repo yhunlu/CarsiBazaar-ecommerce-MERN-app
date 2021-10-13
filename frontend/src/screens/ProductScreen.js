@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Col,
@@ -9,11 +9,22 @@ import {
   ListGroupItem,
   Image,
 } from "react-bootstrap";
-import products from "../products";
 import Rating from "../components/Rating";
+import axios from "axios";
 
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id);
+  const [product, setProduct] = useState([]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${match.params.id}`);
+
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, []);
+
   return (
     <>
       <Link className="btn btn-outline-primary my-3" to="/">
@@ -42,23 +53,32 @@ const ProductScreen = ({ match }) => {
             <ListGroup variant="flush">
               <ListGroupItem>
                 <Row>
-                  <Col as="h4">Fiyat:</Col>
+                  <Col as="h5">Fiyat:</Col>
                   <Col>
                     <span className="badge bg-info rounded-pill">
-                      <h1>{(product.price * 9).toFixed(0)} TL </h1>
+                      <h5>{(product.price * 9).toFixed(0)} TL </h5>
                     </span>
                   </Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
-                  <Col as="h4">Durum:</Col>
+                  <Col as="h5">Durum:</Col>
                   <Col>
-                    <span className="badge bg-warning rounded-pill">
-                      <h4>
-                        {product.countInStock > 0 ? "Stokta" : "Stokta Yok"}
-                      </h4>
-                    </span>
+                    {product.countInStock > 0 && (
+                      <span className="badge bg-warning rounded-pill">
+                        <h5>
+                          {product.countInStock > 0 ? "Stokta" : "Stokta Yok"}
+                        </h5>
+                      </span>
+                    )}
+                    {product.countInStock === 0 && (
+                      <span className="badge bg-danger rounded-pill">
+                        <h5>
+                          {product.countInStock > 0 ? "Stokta" : "Stokta Yok"}
+                        </h5>
+                      </span>
+                    )}
                   </Col>
                 </Row>
               </ListGroupItem>

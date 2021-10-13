@@ -1,0 +1,14 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "CarsiBazaar MERN stuck Ecommerce App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "author": "YAHYA UNLU",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
