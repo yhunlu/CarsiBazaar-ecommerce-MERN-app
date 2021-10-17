@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
-import { listProducts } from "../actions/productActions";
+import { loadProducts } from "./../store/products";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const productList = useSelector((state) => state.entities.products);
+  const { loading, error, lists } = productList;
 
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(loadProducts());
   }, [dispatch]);
 
   return (
@@ -23,7 +23,7 @@ const HomeScreen = () => {
         <h3>{error}</h3>
       ) : (
         <Row>
-          {products.map((product) => (
+          {lists.map((product) => (
             <Col key={product._id} sm={12} md={6} lg={4}>
               <Product product={product} />
             </Col>
