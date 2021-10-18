@@ -6,6 +6,7 @@ const slice = createSlice({
   name: "products",
   initialState: {
     lists: [],
+    error: [],
     loading: false,
     lastFetch: null,
   },
@@ -15,6 +16,7 @@ const slice = createSlice({
     },
     productsRequestFailed: (products, action) => {
       products.loading = false;
+      products.error = action.payload;
     },
     // products/productsReceived
     productsReceived: (products, action) => {
@@ -25,12 +27,8 @@ const slice = createSlice({
   },
 });
 
-export const {
-  productsReceived,
-  productsRequested,
-  productsRequestFailed,
-  productAdded,
-} = slice.actions;
+export const { productsReceived, productsRequested, productsRequestFailed } =
+  slice.actions;
 export default slice.reducer;
 
 // Action Creators
