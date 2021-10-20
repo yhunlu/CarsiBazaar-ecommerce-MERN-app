@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
 import { apiCallBegan } from "./api";
 import moment from "moment";
 
@@ -50,10 +49,3 @@ export const loadProducts = () => (dispatch, getState) => {
     })
   );
 };
-
-export const getProductsById = (productId) =>
-  createSelector(
-    (state) => state.entities.products,
-    (products) =>
-      products.lists.filter((product) => product.productId === productId)
-  );
