@@ -34,8 +34,8 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <>
-      <Link className="btn btn-outline-primary my-3" to="/">
-        Geri Git
+      <Link className="btn btn-primary my-3" to="/">
+        <strong>Geri Git</strong>
       </Link>
       {loading ? (
         <Loader />
@@ -120,7 +120,7 @@ const ProductScreen = ({ history, match }) => {
                 <ListGroupItem className="d-grid gap-2">
                   <Button
                     onClick={addToCartHandler}
-                    className="btn btn-lg btn-success"
+                    className="btn btn-lg btn-outline-success"
                     type="button"
                     disabled={product.countInStock === 0}
                   >

@@ -9,7 +9,7 @@ const cartItemFromStorage = localStorage.getItem("cartItem")
   : [];
 
 const initialState = {
-  cartItem: { Items: cartItemFromStorage },
+  entities: { cartItem: cartItemFromStorage },
 };
 
 const middleware = [thunk, api];

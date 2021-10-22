@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan, apiCallSuccess } from "./api";
+import axios from "axios";
 
 const slice = createSlice({
   name: "cartItem",
@@ -10,57 +10,59 @@ const slice = createSlice({
     cartAdded: (cartItem, action) => {
       const item = action.payload;
 
-      const qty = 1;
-
-      const existItem = cartItem.Items.find((x) => x.product === item._id);
+      const existItem = cartItem.Items.find((x) => x.product === item.product);
 
       if (existItem) {
         return {
           ...cartItem,
           Items: cartItem.Items.map((x) =>
-            x.product === existItem.product
-              ? {
-                  product: item._id,
-                  name: item.name,
-                  image: item.image,
-                  price: item.price,
-                  countInStock: item.countInStock,
-                  qty,
-                }
-              : x
+            x.product === existItem.product ? item : x
           ),
         };
       } else {
         return {
           ...cartItem,
-          Items: [
-            ...cartItem.Items,
-            {
-              product: item._id,
-              name: item.name,
-              image: item.image,
-              price: item.price,
-              countInStock: item.countInStock,
-              qty,
-            },
-          ],
+          Items: [...cartItem.Items, item],
         };
       }
+    },
+    cartRemoved: (cartItem, action) => {
+      return {
+        ...cartItem,
+        Items: cartItem.Items.filter((x) => x.product !== action.payload),
+      };
     },
   },
 });
 
-export const { cartAdded } = slice.actions;
+export const { cartAdded, cartRemoved } = slice.actions;
 export default slice.reducer;
 
-const url = "/products";
-export const addToCart = (id, qty) => (dispatch, getState) => {
-  dispatch(
-    apiCallBegan({
-      url: url + "/" + id,
-      onSuccess: cartAdded.type,
-    })
+export const addToCart = (id, qty) => async (dispatch, getState) => {
+  const { data } = await axios.get(`/api/products/${id}`);
+
+  dispatch({
+    type: cartAdded.type,
+    payload: {
+      product: data._id,
+      name: data.name,
+      image: data.image,
+      price: data.price,
+      countInStock: data.countInStock,
+      qty,
+    },
+  });
+  localStorage.setItem(
+    "cartItem",
+    JSON.stringify(getState().entities.cartItem)
   );
+};
+
+export const removeFromCart = (id) => async (dispatch, getState) => {
+  dispatch({
+    type: cartRemoved.type,
+    payload: id,
+  });
   localStorage.setItem(
     "cartItem",
     JSON.stringify(getState().entities.cartItem)
