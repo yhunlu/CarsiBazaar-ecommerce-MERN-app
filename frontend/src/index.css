@@ -19,3 +19,13 @@ h2 {
 .rating span {
   margin: 0.5rem 0;
 }
+
+.badge {
+  background-color: #008000;
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.1rem;
+}
