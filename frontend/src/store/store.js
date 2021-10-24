@@ -8,8 +8,15 @@ const cartItemFromStorage = localStorage.getItem("cartItem")
   ? JSON.parse(localStorage.getItem("cartItem"))
   : [];
 
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
+
 const initialState = {
-  entities: { cartItem: cartItemFromStorage },
+  entities: {
+    cartItem: cartItemFromStorage,
+    users: { userInfo: userInfoFromStorage },
+  },
 };
 
 const middleware = [thunk, api];
