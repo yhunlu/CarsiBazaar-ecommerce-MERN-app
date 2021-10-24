@@ -20,7 +20,7 @@ h2 {
   margin: 0.5rem 0;
 }
 
-.badge {
+/* .badge {
   background-color: #008000;
   color: #ffffff;
   border-radius: 50%;
@@ -28,4 +28,34 @@ h2 {
   font-size: 1rem;
   margin-left: 0.5rem;
   margin-right: 0.1rem;
+} */
+
+.p1[data-count]:after {
+  position: absolute;
+  right: 20%;
+  top: 3%;
+  content: attr(data-count);
+  font-size: 1rem;
+  padding: 0.4em;
+  border-radius: 20%;
+  line-height: 1rem;
+  color: white;
+  background: #008000;
+  text-align: center;
+  min-width: 1em;
+  font-weight: bold;
+}
+
+.fa-user {
+  min-width: 1em;
+  font-weight: bold;
+  padding: 1.4rem 0.1rem;
+  line-height: 1rem;
+}
+
+#username {
+  min-width: 1em;
+  font-weight: bold;
+  padding: 2.4rem 0.1rem;
+  line-height: 1rem;
 }

@@ -23,13 +23,17 @@ const slice = createSlice({
       localStorage.setItem("userInfo", JSON.stringify(action.payload));
     },
     usersLogout: (users, action) => {
-      users.userInfo = {};
+      users.userInfo = null;
     },
   },
 });
 
-export const { usersReceived, usersRequested, usersRequestFailed } =
-  slice.actions;
+export const {
+  usersReceived,
+  usersRequested,
+  usersRequestFailed,
+  usersLogout,
+} = slice.actions;
 export default slice.reducer;
 
 // Action Creators
@@ -53,4 +57,9 @@ export const login = (email, password) => async (dispatch, getState) => {
       onError: usersRequestFailed.type,
     })
   );
+};
+
+export const logout = () => (dispatch, getState) => {
+  localStorage.removeItem("userInfo");
+  dispatch({ type: usersLogout.type });
 };
