@@ -83,7 +83,7 @@ export const logout = () => (dispatch, getState) => {
 };
 
 // Register
-const url_register = "/users";
+const url_users = "/users";
 // () => fn (dispatch, getState)
 export const register =
   (name, email, password) => async (dispatch, getState) => {
@@ -95,7 +95,7 @@ export const register =
 
     dispatch(
       apiCallBegan({
-        url: url_register,
+        url: url_users,
         data: { name, email, password },
         config,
         method: "POST",
