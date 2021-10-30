@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserDetails } from "../store/userDetails";
+import { getUserDetails, updateUserProfile } from "../store/userDetails";
 
 const ProfileScreen = ({ location, history }) => {
     const [name, setName] = useState("");
@@ -15,7 +15,7 @@ const ProfileScreen = ({ location, history }) => {
     const dispatch = useDispatch();
 
     const userDetails = useSelector((state) => state.entities.userDetails);
-    const { loading, error, user } = userDetails;
+    const { loading, error, user, success } = userDetails;
 
     const userLogin = useSelector((state) => state.entities.users);
     const { userInfo } = userLogin;
@@ -40,7 +40,7 @@ const ProfileScreen = ({ location, history }) => {
         if (password !== confirmPassword) {
             setMessage("Şifreler Aynı Değil !");
         } else {
-            //dispatch update profile
+            dispatch(updateUserProfile({ id: user._id, name, email, password }))
         }
     };
 
@@ -49,6 +49,7 @@ const ProfileScreen = ({ location, history }) => {
             <Col md={3}>
                 <h2>Ayarlarım</h2>
                 {message && <Message variant="danger">{message}</Message>}
+                {success > 0 && <Message variant="success">Güncellendi</Message>}
                 {error.length > 0 && <Message variant="danger">{error}</Message>}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>

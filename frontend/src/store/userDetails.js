@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./api";
 import axios from "axios";
 
 const slice = createSlice({
@@ -8,6 +7,7 @@ const slice = createSlice({
         user: [],
         error: [],
         loading: false,
+        success: false,
     },
     reducers: {
         userDetailsRequested: (userDetails, action) => {
@@ -23,6 +23,18 @@ const slice = createSlice({
             userDetails.user = action.payload;
             userDetails.loading = false;
         },
+        updateProfileRequested: (userDetails, action) => {
+            userDetails.loading = true;
+        },
+        updateProfileRequestFailed: (userDetails, action) => {
+            userDetails.loading = false;
+            userDetails.error = action.payload;
+        },
+        updateProfileReceived: (userDetails, action) => {
+            userDetails.user = action.payload;
+            userDetails.success = true
+            userDetails.loading = false;
+        },
     },
 });
 
@@ -30,6 +42,9 @@ export const {
     userDetailsReceived,
     userDetailsRequested,
     userDetailsRequestFailed,
+    updateProfileReceived,
+    updateProfileRequested,
+    updateProfileRequestFailed,
 } = slice.actions;
 export default slice.reducer;
 
@@ -64,4 +79,35 @@ export const getUserDetails =
             })
         }
 
+    };
+
+export const updateUserProfile =
+    (user) => async (dispatch, getState) => {
+
+        try {
+            dispatch({
+                type: updateProfileRequested.type,
+            })
+
+            const { userInfo } = getState().entities.users;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`
+                },
+            };
+
+            const { data } = await axios.put(`/api/users/profile`, user, config);
+
+            dispatch({
+                type: updateProfileReceived.type,
+                payload: data
+            });
+        } catch (error) {
+            dispatch({
+                type: updateProfileRequestFailed.type,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            })
+        }
     };
