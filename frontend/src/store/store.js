@@ -6,7 +6,11 @@ import api from "./middleware/api";
 
 const cartItemFromStorage = localStorage.getItem("cartItem")
   ? JSON.parse(localStorage.getItem("cartItem"))
-  : { Items: [] };
+  : [];
+
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {};
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -14,7 +18,8 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 
 const initialState = {
   entities: {
-    cartItem: cartItemFromStorage,
+    cartItem: { Items: cartItemFromStorage },
+    shipping: { shippingAddress: shippingAddressFromStorage },
     users: { userInfo: userInfoFromStorage },
   },
 };

@@ -47,7 +47,7 @@ const ProfileScreen = ({ location, history }) => {
     return (
         <Row>
             <Col md={3}>
-                <h2>Ayarlarım</h2>
+                <h2>Kullanıcı Bilgilerim</h2>
                 {message && <Message variant="danger">{message}</Message>}
                 {success > 0 && <Message variant="success">Güncellendi</Message>}
                 {error.length > 0 && <Message variant="danger">{error}</Message>}

@@ -22,7 +22,9 @@ const CartScreen = ({ match, location, history }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.entities.cartItem);
-  const { Items: cartItem } = cart;
+  const { Items } = cart;
+
+  console.log(Items);
 
   useEffect(() => {
     if (productId) {
@@ -41,13 +43,13 @@ const CartScreen = ({ match, location, history }) => {
     <Row>
       <Col md={8}>
         <h1>Alışveriş Sepeti</h1>
-        {cartItem.length === 0 ? (
+        {Items.length === 0 ? (
           <Message>
             Sepetin boş ! <Link to="/">Geri Git</Link>
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItem.map((item) => (
+            {Items.map((item) => (
               <ListGroupItem key={item.product}>
                 <Row>
                   <Col md={2}>
@@ -94,10 +96,10 @@ const CartScreen = ({ match, location, history }) => {
           <ListGroup variant="flush">
             <ListGroupItem>
               <h2>
-                Ara Toplam ({cartItem.reduce((acc, item) => acc + item.qty, 0)})
+                Ara Toplam ({Items.reduce((acc, item) => acc + item.qty, 0)})
                 parça
               </h2>
-              {cartItem
+              {Items
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}{" "}
               TL
@@ -106,7 +108,7 @@ const CartScreen = ({ match, location, history }) => {
               <Button
                 type="button"
                 className="btn btn-lg btn-outline-success"
-                disabled={cartItem.length === 0}
+                disabled={Items.length === 0}
                 onClick={checkoutHandler}
               >
                 Alışverişi Tamamla
