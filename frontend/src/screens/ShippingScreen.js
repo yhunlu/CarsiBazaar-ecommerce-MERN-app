@@ -26,7 +26,7 @@ const ShippingScreen = ({ history }) => {
         <FormContainer>
             <CheckoutSteps step1 step2 />
             <h1>Adres Bilgilerim</h1>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} className="d-grid gap-2">
                 <Form.Group controlId="address">
                     <Form.Label>Adres</Form.Label>
                     <Form.Control
@@ -68,7 +68,7 @@ const ShippingScreen = ({ history }) => {
                     ></Form.Control>
                 </Form.Group>
 
-                <Button type='submit' variant='primary'>Devam Et</Button>
+                <Button type='submit' className='btn btn-md btn-outline-success'>Devam Et</Button>
             </Form>
         </FormContainer>
     )

@@ -24,8 +24,6 @@ const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.entities.cartItem);
   const { Items } = cart;
 
-  console.log(Items);
-
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
@@ -107,7 +105,7 @@ const CartScreen = ({ match, location, history }) => {
             <ListGroupItem className="d-grid gap-2">
               <Button
                 type="button"
-                className="btn btn-lg btn-outline-success"
+                className="btn btn-md btn-outline-success"
                 disabled={Items.length === 0}
                 onClick={checkoutHandler}
               >

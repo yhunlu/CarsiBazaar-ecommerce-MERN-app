@@ -8,7 +8,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.entities.cartItem);
-  const { Items: cartItem } = cart;
+  const { Items } = cart;
 
   const userLogin = useSelector((state) => state.entities.users);
   const { userInfo } = userLogin;
@@ -37,7 +37,7 @@ const Header = () => {
                 <Nav.Link href="/cart">
                   <span
                     className="p1 fa-stack fa-2x has-badge"
-                    data-count={cartItem.length > 0 ? cartItem.length : 0}
+                    data-count={Items.length > 0 ? Items.length : 0}
                   >
                     <i className="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse"></i>
                   </span>

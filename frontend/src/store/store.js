@@ -6,7 +6,7 @@ import api from "./middleware/api";
 
 const cartItemFromStorage = localStorage.getItem("cartItem")
   ? JSON.parse(localStorage.getItem("cartItem"))
-  : [];
+  : { Items: [] };
 
 const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))

@@ -27,16 +27,16 @@ const PaymentScreen = ({ history }) => {
         <FormContainer>
             <CheckoutSteps step1 step2 step3 />
             <h1>Ödeme Seçeneklerim</h1>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} className="d-grid gap-2">
                 <Form.Group>
                     <Form.Label as='legend'>Ödeme Tipini Seç</Form.Label>
                     <Col>
-                        <Form.Check type='radio' label='PayPal veya Kredi Kartı' id='PayPal' name='paymentMethod' value='PayPal' checked onChange={e => setPaymentMethod(e.target.value)}></Form.Check>
-                        {/* <Form.Check type='radio' label='Stripe' id='Stripe' name='paymentMethod' value='Stripe' onChange={e => setPaymentMethod(e.target.value)}></Form.Check> */}
+                        <Form.Check type='radio' label='PayPal' id='PayPal' name='paymentMethod' value='PayPal' checked onChange={e => setPaymentMethod(e.target.value)}></Form.Check>
+                        <Form.Check type='radio' label='Kredi Kartı' id='CreditCard' name='paymentMethod' value='CreditCard' onChange={e => setPaymentMethod(e.target.value)}></Form.Check>
+                        <Form.Check type='radio' label='Stripe' id='Stripe' name='paymentMethod' value='Stripe' onChange={e => setPaymentMethod(e.target.value)}></Form.Check>
                     </Col>
                 </Form.Group>
-                <Button type='submit' variant='primary'>Devam Et</Button>
-
+                <Button type='submit' className='btn btn-md btn-outline-success'>Devam Et</Button>
             </Form>
         </FormContainer>
     )

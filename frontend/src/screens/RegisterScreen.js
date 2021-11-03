@@ -43,7 +43,7 @@ const RegisterScreen = ({ location, history }) => {
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} className="d-grid gap-2">
         <Form.Group controlId="name">
           <Form.Label>İsim</Form.Label>
           <Form.Control
@@ -80,7 +80,7 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" variant="primary">
+        <Button type="submit" className="btn btn-md btn-outline-success">
           Üye Ol
         </Button>
       </Form>

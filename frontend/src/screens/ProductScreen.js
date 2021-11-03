@@ -100,7 +100,7 @@ const ProductScreen = ({ history, match }) => {
                 {product.countInStock > 0 && (
                   <ListGroupItem>
                     <Row>
-                      <Col>Miktar</Col>
+                      <Col as="h5">Miktar</Col>
                       <Col>
                         <Form.Control
                           as="select"
@@ -120,7 +120,7 @@ const ProductScreen = ({ history, match }) => {
                 <ListGroupItem className="d-grid gap-2">
                   <Button
                     onClick={addToCartHandler}
-                    className="btn btn-lg btn-outline-success"
+                    className="btn btn-md btn-outline-success"
                     type="button"
                     disabled={product.countInStock === 0}
                   >
