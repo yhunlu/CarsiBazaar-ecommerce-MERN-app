@@ -6,6 +6,7 @@ import userLoginReducer from "./users";
 import userDetailsReducer from "./userDetails";
 import shippingReducer from "./shipping";
 import paymentReducer from "./payment";
+import orderReducer from "./order";
 
 export default combineReducers({
   products: productsReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   userDetails: userDetailsReducer,
   shipping: shippingReducer,
   payment: paymentReducer,
+  order: orderReducer,
 });

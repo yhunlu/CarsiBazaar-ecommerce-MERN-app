@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card, ListGroupItem } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from '../components/Message';
+import { createOrder } from '../store/order';
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({ history }) => {
+    const dispatch = useDispatch();
+
     const shipping = useSelector(state => state.entities.shipping);
     const payment = useSelector(state => state.entities.payment);
     const cart = useSelector(state => state.entities.cartItem);
@@ -19,9 +22,28 @@ const PlaceOrderScreen = () => {
     let taxPrice = addDecimals(Number((0.18 * itemsPrice).toFixed(2)));
     let total = addDecimals((Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)).toFixed(2));
 
+    const orderCreate = useSelector(state => state.entities.order)
+    const { lists, success, error } = orderCreate
+
+    useEffect(() => {
+        if(success) {
+            history.push(`/order/${lists._id}`)
+        }
+        // eslint-disable-next-line
+    }, [history, success])
+
     const placeOrderHandler = () => {
-        console.log("Sipariş Verildi...")
+        dispatch(createOrder({
+            orderItems: cart.Items,
+            shippingAddress: shipping.shippingAddress,
+            paymentMethod: payment.paymentMethod,
+            itemsPrice,
+            shippingPrice,
+            taxPrice,
+            totalPrice: total
+        }))
     }
+
     return (
         <>
             <CheckoutSteps step1 step2 step3 step4 />
@@ -92,6 +114,9 @@ const PlaceOrderScreen = () => {
                                     <Col>Toplam</Col>
                                     <Col>{total} TL</Col>
                                 </Row>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                                {error.length > 0 && <Message variant='danger'>{error}</Message>}
                             </ListGroupItem>
                             <ListGroupItem className="d-grid gap-2">
                                 <Button type='button' className='btn btn-md btn-outline-success' disabled={cart.Items.length === 0} onClick={placeOrderHandler}>Sipariş Ver</Button>
