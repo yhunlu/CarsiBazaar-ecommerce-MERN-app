@@ -10,9 +10,11 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
+import axios from "axios";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getOrderDetails } from "../store/order";
+import { getOrderDetails, updateOrderPay, orderPayReset } from "../store/order";
 
 const OrderScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -20,9 +22,35 @@ const OrderScreen = ({ match }) => {
   const orderDetails = useSelector((state) => state.entities.order);
   const { lists: order, loading, error } = orderDetails;
 
+  const orderPay = useSelector((state) => state.entities.order);
+  const { loading: loadingPay, success: successPay } = orderPay;
+
+  const users = useSelector((state) => state.entities.users);
+  const { userInfo } = users;
+
+  const handleToken = async (token) => {
+    const response = await axios.post("/api/config/stripe", { token, order });
+    const { status } = response.data;
+
+    console.log(response);
+    // write function
+    stripeSuccess(status, response.data);
+  };
+
+  const stripeSuccess = (status, data) => {
+    if (status === "success") {
+      dispatch(updateOrderPay(match.params.id, data));
+    } else {
+      dispatch(updateOrderPay(match.params.id, data));
+    }
+  };
+
   useEffect(() => {
-    dispatch(getOrderDetails(match.params.id));
-  }, [dispatch, match.params.id]);
+    if (!order.isPaid && successPay) {
+      dispatch({ type: orderPayReset.type });
+      dispatch(getOrderDetails(match.params.id));
+    }
+  }, [dispatch, match.params.id, order.isPaid, successPay]);
 
   return loading ? (
     <Loader />
@@ -141,9 +169,19 @@ const OrderScreen = ({ match }) => {
                   <Message variant="danger">{error}</Message>
                 )}
               </ListGroupItem>
-              {/* <ListGroupItem className="d-grid gap-2">
-                                <Button type='button' className='btn btn-md btn-outline-success' disabled={order.orderItems.length === 0} onClick={placeOrderHandler}>Sipariş Ver</Button>
-                            </ListGroupItem> */}
+              {!order.isPaid && (
+                <ListGroupItem className="d-grid gap-2">
+                  {loadingPay && <Loader />}
+                  <StripeCheckout
+                    stripeKey="pk_test_51JtdgkCpdL7hJ0b5ma1ScOxdVJIpVHqezNcoXBJv3IIpZRU0wenN10HX3tW4yO5tTolofhAs29Oa4RFIz4Rzl07300mrxG3SuL"
+                    token={handleToken}
+                    amount={order.totalPrice * 100}
+                    currency="TRY"
+                    name={order._id}
+                    email={userInfo.email}
+                  />
+                </ListGroupItem>
+              )}
             </ListGroup>
           </Card>
         </Col>

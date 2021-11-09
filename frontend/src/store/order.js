@@ -49,7 +49,12 @@ const slice = createSlice({
       order.loading = false;
     },
     orderPayReset: (order, action) => {
-      return {};
+      return {
+        lists: [],
+        error: [],
+        loading: false,
+        success: false,
+      };
     },
   },
 });
@@ -99,7 +104,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
           : error.message,
     });
   }
-  // localStorage.setItem("order", JSON.stringify(getState().entities.order));
+  localStorage.setItem("order", JSON.stringify(getState().entities.order));
 };
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {
