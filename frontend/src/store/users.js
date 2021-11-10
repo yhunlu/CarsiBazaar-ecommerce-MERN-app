@@ -24,6 +24,11 @@ const slice = createSlice({
     },
     usersLogout: (users, action) => {
       users.userInfo = null;
+      // return {
+      //   userInfo: [],
+      //   error: [],
+      //   loading: false,
+      // };
     },
     registerRequested: (users, action) => {
       users.loading = true;

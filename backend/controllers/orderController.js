@@ -64,7 +64,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
-      id: req.body._id,
+      id: req.body.id,
       status: req.body.status,
       update_time: req.body.update_time,
       email_address: req.body.receipt_email,
@@ -79,4 +79,14 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid };
+// @desc Get logged in user orders
+// @routes GET /api/orders/myorders
+// @access Private
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({
+    user: req.user._id,
+  });
+  res.json(orders);
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders };

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  Button,
   Row,
   Col,
   ListGroup,
@@ -16,7 +15,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { getOrderDetails, updateOrderPay, orderPayReset } from "../store/order";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const orderDetails = useSelector((state) => state.entities.order);
@@ -28,11 +27,17 @@ const OrderScreen = ({ match }) => {
   const users = useSelector((state) => state.entities.users);
   const { userInfo } = users;
 
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+  }, [history, userInfo]);
+
   const handleToken = async (token) => {
     const response = await axios.post("/api/config/stripe", { token, order });
     const { status } = response.data;
 
-    console.log(response);
+    // console.log(response);
     // write function
     stripeSuccess(status, response.data);
   };
@@ -46,11 +51,16 @@ const OrderScreen = ({ match }) => {
   };
 
   useEffect(() => {
+    dispatch({ type: orderPayReset.type });
+    dispatch(getOrderDetails(match.params.id));
+  }, [dispatch, match.params.id]);
+
+  useEffect(() => {
     if (!order.isPaid && successPay) {
-      dispatch({ type: orderPayReset.type });
       dispatch(getOrderDetails(match.params.id));
     }
-  }, [dispatch, match.params.id, order.isPaid, successPay]);
+    // eslint-disable-next-line
+  }, [dispatch, order.isPaid, successPay]);
 
   return loading ? (
     <Loader />
@@ -175,10 +185,10 @@ const OrderScreen = ({ match }) => {
                   <StripeCheckout
                     stripeKey="pk_test_51JtdgkCpdL7hJ0b5ma1ScOxdVJIpVHqezNcoXBJv3IIpZRU0wenN10HX3tW4yO5tTolofhAs29Oa4RFIz4Rzl07300mrxG3SuL"
                     token={handleToken}
-                    amount={order.totalPrice * 100}
+                    amount={order.totalPrice}
                     currency="TRY"
                     name={order._id}
-                    email={userInfo.email}
+                    email={order.user.email}
                   />
                 </ListGroupItem>
               )}
