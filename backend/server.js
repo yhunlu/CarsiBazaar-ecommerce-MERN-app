@@ -11,12 +11,14 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import { createCheckoutSession } from "./api/checkout.js";
 
 dotenv.config();
 
 connectDB();
 
 const app = express();
+
 const stripe = new Stripe(process.env.STRIPE_CLIENT_SECRET_KEY);
 
 app.use(express.json());
@@ -25,6 +27,12 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
+
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+
+// app.post("/create-checkout-session", createCheckoutSession);
 
 app.post("/api/config/stripe", async (req, res) => {
   console.log("Request:", req.body);
@@ -60,10 +68,6 @@ app.post("/api/config/stripe", async (req, res) => {
 
   res.json({ error, status });
 });
-
-app.use("/api/products", productRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/orders", orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

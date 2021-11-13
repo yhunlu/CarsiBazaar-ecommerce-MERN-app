@@ -36,7 +36,7 @@ h2 {
   top: 3%;
   content: attr(data-count);
   font-size: 1rem;
-  padding: 0.4em;
+  padding: 0.3em;
   border-radius: 20%;
   line-height: 1rem;
   color: white;
@@ -56,6 +56,15 @@ h2 {
 #username {
   min-width: 1em;
   font-weight: bold;
-  padding: 1.93rem 0.5rem;
+  padding: 1.9rem 3rem;
   line-height: 1rem;
+  text-align: center;
+}
+
+#adminmenu {
+  min-width: 1em;
+  font-weight: bold;
+  padding: 1.9rem 0.1rem;
+  line-height: 1rem;
+  text-align: center;
 }

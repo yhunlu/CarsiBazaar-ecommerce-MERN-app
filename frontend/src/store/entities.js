@@ -8,6 +8,7 @@ import shippingReducer from "./shipping";
 import paymentReducer from "./payment";
 import orderReducer from "./order";
 import myOrderListReducer from "./myOrderList";
+import userListReducer from "./userList";
 
 export default combineReducers({
   products: productsReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   payment: paymentReducer,
   order: orderReducer,
   myOrderList: myOrderListReducer,
+  userList: userListReducer,
 });
