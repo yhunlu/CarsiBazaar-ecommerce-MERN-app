@@ -21,11 +21,27 @@ const slice = createSlice({
       userList.users = action.payload;
       userList.loading = false;
     },
+    userDeleteRequested: (userList, action) => {
+      userList.success = false;
+    },
+    userDeleteSuccess: (userList, action) => {
+      userList.success = true;
+    },
+    userDeleteFail: (userList, action) => {
+      userList.error = action.payload;
+      userList.success = false;
+    },
   },
 });
 
-export const { userListReceived, userListRequested, userListRequestFailed } =
-  slice.actions;
+export const {
+  userListReceived,
+  userListRequested,
+  userListRequestFailed,
+  userDeleteRequested,
+  userDeleteSuccess,
+  userDeleteFail,
+} = slice.actions;
 export default slice.reducer;
 
 // Action Creators
@@ -52,6 +68,36 @@ export const listUsers = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: userListRequestFailed.type,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: userDeleteRequested.type,
+    });
+
+    const { userInfo } = getState().entities.users;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/users/${id}`, config);
+
+    dispatch({
+      type: userDeleteSuccess.type,
+    });
+  } catch (error) {
+    dispatch({
+      type: userDeleteFail.type,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

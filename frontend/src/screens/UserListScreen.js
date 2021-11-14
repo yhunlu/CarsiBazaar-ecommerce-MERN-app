@@ -4,13 +4,13 @@ import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listUsers } from "./../store/userList";
+import { listUsers, deleteUser } from "./../store/userList";
 
 const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const userList = useSelector((state) => state.entities.userList);
-  const { loading, error, users } = userList;
+  const { loading, error, users, success: successDelete } = userList;
 
   const userLogin = useSelector((state) => state.entities.users);
   const { userInfo } = userLogin;
@@ -21,10 +21,12 @@ const UserListScreen = ({ history }) => {
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, history, userInfo, successDelete]);
 
-  const deleteHandler = (user) => {
-    console.log(user.name);
+  const deleteHandler = (id) => {
+    if (window.confirm("Silmek istediğinden emin misin?")) {
+      dispatch(deleteUser(id));
+    }
   };
 
   return (
@@ -66,12 +68,14 @@ const UserListScreen = ({ history }) => {
                       <i className="fas fa-edit"></i>
                     </Button>
                   </LinkContainer>
-                  <Button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => deleteHandler(user)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
+                  {!user.isAdmin && (
+                    <Button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => deleteHandler(user._id)}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </Button>
+                  )}
                 </td>
               </tr>
             ))}
