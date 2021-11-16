@@ -11,7 +11,7 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-import { createCheckoutSession } from "./api/checkout.js";
+// import { createCheckoutSession } from "./api/checkout.js";
 
 dotenv.config();
 
@@ -72,7 +72,7 @@ app.post("/api/config/stripe", async (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(
   PORT,
