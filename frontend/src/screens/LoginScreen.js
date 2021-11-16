@@ -54,7 +54,11 @@ const LoginScreen = ({ location, history }) => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" className="btn btn-md btn-outline-success">
+        <Button
+          type="submit"
+          className="btn btn-md btn-outline-info"
+          variant="light"
+        >
           Giriş Yap
         </Button>
       </Form>
@@ -62,7 +66,10 @@ const LoginScreen = ({ location, history }) => {
       <Row className="py-3">
         <Col>
           Yeni müşteri misiniz ?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+          <Link
+            to={redirect ? `/register?redirect=${redirect}` : "/register"}
+            style={{ color: "red" }}
+          >
             Üye Ol
           </Link>
         </Col>

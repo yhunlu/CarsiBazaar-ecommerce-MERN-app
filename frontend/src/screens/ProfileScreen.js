@@ -98,8 +98,12 @@ const ProfileScreen = ({ location, history }) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Button type="submit" className="btn btn-md btn-outline-success">
-            Güncelle
+          <Button
+            type="submit"
+            className="btn btn-md btn-outline-warning"
+            variant="light"
+          >
+            KAYDET
           </Button>
         </Form>
       </Col>

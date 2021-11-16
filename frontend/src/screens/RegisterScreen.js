@@ -80,7 +80,11 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" className="btn btn-md btn-outline-success">
+        <Button
+          type="submit"
+          className="btn btn-md btn-outline-info"
+          variant="light"
+        >
           Üye Ol
         </Button>
       </Form>
@@ -88,7 +92,10 @@ const RegisterScreen = ({ location, history }) => {
       <Row className="py-3">
         <Col>
           Zaten Üye misin ?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+          <Link
+            to={redirect ? `/login?redirect=${redirect}` : "/login"}
+            style={{ color: "green" }}
+          >
             Giriş Yap
           </Link>
         </Col>
