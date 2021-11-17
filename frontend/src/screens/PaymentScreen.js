@@ -44,8 +44,8 @@ const PaymentScreen = ({ history }) => {
             {/* <Form.Check type='radio' label='Stripe' id='Stripe' name='paymentMethod' value='Stripe' onChange={e => setPaymentMethod(e.target.value)}></Form.Check> */}
           </Col>
         </Form.Group>
-        <Button type="submit" className="btn btn-md btn-outline-success">
-          Devam Et
+        <Button type="submit" className="btn btn-md btn-success">
+          Devam Et {">"}
         </Button>
       </Form>
     </FormContainer>

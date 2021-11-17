@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { getUserDetails } from "../store/userDetails";
+import { getUserDetails, updateUserEdit } from "../store/userDetails";
 
 const UserEditScreen = ({ match, history }) => {
   const userId = match.params.id;
@@ -17,9 +17,12 @@ const UserEditScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.entities.userDetails);
-  const { loading, error, user } = userDetails;
+  const { loading, error, user, success } = userDetails;
 
   useEffect(() => {
+    if (success) {
+      history.push("/admin/userlist");
+    }
     if (!user.name || user._id !== userId) {
       dispatch(getUserDetails(userId));
     } else {
@@ -27,10 +30,20 @@ const UserEditScreen = ({ match, history }) => {
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
     }
-  }, [dispatch, userId, user._id, user.name, user.email, user.isAdmin]);
+  }, [
+    dispatch,
+    userId,
+    user._id,
+    user.name,
+    user.email,
+    user.isAdmin,
+    history,
+    success,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(updateUserEdit({ _id: userId, name, email, isAdmin }));
   };
 
   return (

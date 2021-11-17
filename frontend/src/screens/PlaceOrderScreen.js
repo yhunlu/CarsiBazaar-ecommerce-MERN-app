@@ -152,11 +152,11 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroupItem className="d-grid gap-2">
                 <Button
                   type="button"
-                  className="btn btn-md btn-outline-success"
+                  className="btn btn-md btn-success"
                   disabled={cart.Items.length === 0}
                   onClick={placeOrderHandler}
                 >
-                  Sipariş Ver
+                  SİPARİŞ VER
                 </Button>
               </ListGroupItem>
             </ListGroup>

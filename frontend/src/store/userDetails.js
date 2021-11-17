@@ -23,6 +23,7 @@ const slice = createSlice({
     userDetailsReceived: (userDetails, action) => {
       userDetails.user = action.payload;
       userDetails.loading = false;
+      userDetails.success = false;
     },
     userDetailsLogout: (userDetails, action) => {
       return {
@@ -44,6 +45,17 @@ const slice = createSlice({
       userDetails.success = true;
       userDetails.loading = false;
     },
+    userEditUpdateRequested: (userDetails, action) => {
+      userDetails.loading = true;
+    },
+    userEditUpdateRequestFailed: (userDetails, action) => {
+      userDetails.loading = false;
+      userDetails.error = action.payload;
+    },
+    userEditUpdateReceived: (userDetails, action) => {
+      userDetails.success = true;
+      userDetails.loading = false;
+    },
   },
 });
 
@@ -55,6 +67,9 @@ export const {
   updateProfileReceived,
   updateProfileRequested,
   updateProfileRequestFailed,
+  userEditUpdateReceived,
+  userEditUpdateRequested,
+  userEditUpdateRequestFailed,
 } = slice.actions;
 export default slice.reducer;
 
@@ -119,6 +134,43 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: updateProfileRequestFailed.type,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserEdit = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: userEditUpdateRequested.type,
+    });
+
+    const { userInfo } = getState().entities.users;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+    dispatch({
+      type: userEditUpdateReceived.type,
+      payload: data,
+    });
+
+    dispatch({
+      type: userDetailsReceived.type,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: userEditUpdateRequestFailed.type,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

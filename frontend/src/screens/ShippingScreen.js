@@ -75,8 +75,8 @@ const ShippingScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type="submit" className="btn btn-md btn-outline-success">
-          Devam Et
+        <Button type="submit" className="btn btn-md btn-success">
+          ADRESİ ONAYLA {">>"}
         </Button>
       </Form>
     </FormContainer>

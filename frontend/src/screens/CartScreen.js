@@ -97,19 +97,20 @@ const CartScreen = ({ match, location, history }) => {
                 Ara Toplam ({Items.reduce((acc, item) => acc + item.qty, 0)})
                 parça
               </h2>
-              {Items
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
-                .toFixed(2)}{" "}
+              {Items.reduce(
+                (acc, item) => acc + item.qty * item.price,
+                0
+              ).toFixed(2)}{" "}
               TL
             </ListGroupItem>
             <ListGroupItem className="d-grid gap-2">
               <Button
                 type="button"
-                className="btn btn-md btn-outline-success"
+                className="btn btn-md btn-success"
                 disabled={Items.length === 0}
                 onClick={checkoutHandler}
               >
-                Alışverişi Tamamla
+                SEPETI ONAYLA {">>>"}
               </Button>
             </ListGroupItem>
           </ListGroup>

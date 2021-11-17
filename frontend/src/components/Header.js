@@ -19,6 +19,10 @@ const Header = () => {
     dispatch(userDetailsLogout());
   };
 
+  const logoutUserDetails = () => {
+    dispatch(userDetailsLogout());
+  };
+
   return (
     <header>
       <Navbar
@@ -49,7 +53,9 @@ const Header = () => {
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">
                   <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profilim</NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutUserDetails}>
+                      Profilim
+                    </NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Çıkış
