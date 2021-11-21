@@ -22,7 +22,7 @@ const OrderScreen = ({ match, history }) => {
   const { lists: order, loading, error } = orderDetails;
 
   const orderPay = useSelector((state) => state.entities.order);
-  const { loading: loadingPay, success: successPay } = orderPay;
+  const { loading: loadingPay, success: successPay, errorPay } = orderPay;
 
   const users = useSelector((state) => state.entities.users);
   const { userInfo } = users;
@@ -102,7 +102,9 @@ const OrderScreen = ({ match, history }) => {
                 <strong>Seçilen: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
+              {errorPay.length > 0 ? (
+                <Message variant="danger">HATA !!!</Message>
+              ) : order.isPaid ? (
                 <Message variant="success">
                   {order.paidAt} tarihinde Ödendi
                 </Message>
@@ -185,7 +187,7 @@ const OrderScreen = ({ match, history }) => {
                   <StripeCheckout
                     stripeKey="pk_test_51JtdgkCpdL7hJ0b5ma1ScOxdVJIpVHqezNcoXBJv3IIpZRU0wenN10HX3tW4yO5tTolofhAs29Oa4RFIz4Rzl07300mrxG3SuL"
                     token={handleToken}
-                    amount={order.totalPrice}
+                    amount={order.totalPrice * 100}
                     currency="TRY"
                     name={order._id}
                     email={order.user.email}

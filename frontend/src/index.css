@@ -69,3 +69,27 @@ h2 {
   line-height: 1rem;
   text-align: center;
 }
+
+.editbutton {
+  position: relative;
+  margin: 0rem 0.2rem;
+  padding: 0.5rem 1rem;
+}
+
+#userlistdelbutton {
+  position: relative;
+  margin: 0rem 0.2rem;
+  padding: 0.5rem 1rem;
+}
+
+#productlistdelbutton {
+  position: relative;
+  margin: 1rem 0.2rem;
+  padding: 0.5rem 1rem;
+}
+
+.longDescription {
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: scroll;
+}

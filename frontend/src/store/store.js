@@ -25,6 +25,7 @@ const orderFromStorage = localStorage.getItem("order")
   : {
       lists: [],
       error: [],
+      errorPay: [],
       loading: false,
       success: false,
     };

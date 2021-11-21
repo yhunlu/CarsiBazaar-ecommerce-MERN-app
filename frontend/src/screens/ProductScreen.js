@@ -34,7 +34,7 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <>
-      <Link className="btn btn-primary my-3" to="/">
+      <Link className="btn btn-md btn-outline-primary my-3" to="/">
         <strong>Geri Git</strong>
       </Link>
       {loading ? (
@@ -57,9 +57,7 @@ const ProductScreen = ({ history, match }) => {
                   text={` ${product.numReviews}`}
                 />
               </ListGroupItem>
-              <ListGroupItem>
-                Fiyat: {(product.price * 9).toFixed(0)} TL
-              </ListGroupItem>
+              <ListGroupItem>Fiyat: {product.price} TL</ListGroupItem>
               <ListGroupItem>Açıklama: {product.description}</ListGroupItem>
             </ListGroup>
           </Col>
@@ -71,7 +69,7 @@ const ProductScreen = ({ history, match }) => {
                     <Col as="h5">Fiyat:</Col>
                     <Col>
                       <span className="badge bg-info rounded-pill">
-                        <h5>{(product.price * 9).toFixed(0)} TL </h5>
+                        <h5>{product.price} TL </h5>
                       </span>
                     </Col>
                   </Row>
@@ -121,6 +119,7 @@ const ProductScreen = ({ history, match }) => {
                   <Button
                     onClick={addToCartHandler}
                     className="btn btn-md btn-outline-success"
+                    variant="light"
                     type="button"
                     disabled={product.countInStock === 0}
                   >

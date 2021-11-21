@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./api";
-import moment from "moment";
+import axios from "axios";
 
 const slice = createSlice({
   name: "products",
@@ -8,7 +8,7 @@ const slice = createSlice({
     lists: [],
     error: [],
     loading: false,
-    lastFetch: null,
+    success: false,
   },
   reducers: {
     productsRequested: (products, action) => {
@@ -18,28 +18,37 @@ const slice = createSlice({
       products.loading = false;
       products.error = action.payload;
     },
-    // products/productsReceived
     productsReceived: (products, action) => {
       products.lists = action.payload;
       products.loading = false;
-      products.lastFetch = Date.now();
+    },
+    productDeleteRequested: (products, action) => {
+      products.success = false;
+    },
+    productDeleteReceived: (products, action) => {
+      products.success = true;
+    },
+    productDeleteRequestFailed: (products, action) => {
+      products.error = action.payload;
+      products.success = false;
     },
   },
 });
 
-export const { productsReceived, productsRequested, productsRequestFailed } =
-  slice.actions;
+export const {
+  productsReceived,
+  productsRequested,
+  productsRequestFailed,
+  productDeleteReceived,
+  productDeleteRequested,
+  productDeleteRequestFailed,
+} = slice.actions;
 export default slice.reducer;
 
 // Action Creators
 const url = "/products";
 // () => fn (dispatch, getState)
 export const loadProducts = () => (dispatch, getState) => {
-  const { lastFetch } = getState().entities.products;
-
-  const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
-  if (diffInMinutes < 10) return;
-
   dispatch(
     apiCallBegan({
       url,
@@ -48,4 +57,34 @@ export const loadProducts = () => (dispatch, getState) => {
       onError: productsRequestFailed.type,
     })
   );
+};
+
+export const deleteProductById = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: productDeleteRequested.type,
+    });
+
+    const { userInfo } = getState().entities.users;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/products/${id}`, config);
+
+    dispatch({
+      type: productDeleteReceived.type,
+    });
+  } catch (error) {
+    dispatch({
+      type: productDeleteRequestFailed.type,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };

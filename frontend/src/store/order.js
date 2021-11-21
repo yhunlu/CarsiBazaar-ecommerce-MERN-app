@@ -6,6 +6,7 @@ const slice = createSlice({
   initialState: {
     lists: [],
     error: [],
+    errorPay: [],
     loading: false,
     success: false,
   },
@@ -39,10 +40,11 @@ const slice = createSlice({
     },
     orderPayRequested: (order, action) => {
       order.loading = true;
+      order.errorPay = [];
     },
     orderPayRequestFailed: (order, action) => {
       order.loading = false;
-      order.error = action.payload;
+      order.errorPay = action.payload;
     },
     orderPayReceived: (order, action) => {
       order.success = true;
@@ -52,6 +54,7 @@ const slice = createSlice({
       return {
         lists: [],
         error: [],
+        errorPay: [],
         loading: false,
         success: false,
       };
@@ -154,16 +157,23 @@ export const updateOrderPay =
         },
       };
 
-      const { data } = await axios.put(
-        `/api/orders/${id}/pay`,
-        paymentResult,
-        config
-      );
+      if (paymentResult.status === "success") {
+        const { data } = await axios.put(
+          `/api/orders/${id}/pay`,
+          paymentResult,
+          config
+        );
 
-      dispatch({
-        type: orderPayReceived.type,
-        payload: data,
-      });
+        dispatch({
+          type: orderPayReceived.type,
+          payload: data,
+        });
+      } else {
+        dispatch({
+          type: orderPayRequestFailed.type,
+          payload: paymentResult.status,
+        });
+      }
     } catch (error) {
       dispatch({
         type: orderPayRequestFailed.type,

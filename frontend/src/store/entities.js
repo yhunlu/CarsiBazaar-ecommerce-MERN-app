@@ -9,9 +9,11 @@ import paymentReducer from "./payment";
 import orderReducer from "./order";
 import myOrderListReducer from "./myOrderList";
 import userListReducer from "./userList";
+import productNewReducer from "./productNew";
 
 export default combineReducers({
   products: productsReducer,
+  productNew: productNewReducer,
   productDetail: productDetailReducer,
   cartItem: cartReducer,
   users: userLoginReducer,
