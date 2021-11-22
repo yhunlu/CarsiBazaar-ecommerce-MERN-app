@@ -145,7 +145,7 @@ const ProductListScreen = ({ history }) => {
                 </td>
                 <td>
                   <LinkContainer
-                    to={`/admin/product/${list._id}/edit`}
+                    to={`/admin/products/${list._id}/edit`}
                     className="editbutton"
                   >
                     <Button className="btn btn-sm btn-dark">

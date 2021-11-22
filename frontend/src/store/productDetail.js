@@ -7,7 +7,6 @@ const slice = createSlice({
     product: [],
     error: [],
     loading: false,
-    lastFetch: null,
   },
   reducers: {
     productDetailRequested: (productDetail, action) => {
@@ -21,7 +20,6 @@ const slice = createSlice({
     productDetailReceived: (productDetail, action) => {
       productDetail.product = action.payload;
       productDetail.loading = false;
-      productDetail.lastFetch = Date.now();
     },
   },
 });

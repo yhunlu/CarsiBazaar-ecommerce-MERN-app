@@ -55,7 +55,7 @@ const UserEditScreen = ({ match, history }) => {
         Geri Git
       </Link>
       <FormContainer className="login">
-        <h1 id="userEditScreenHeader">ÜYE BİLGİSİ DÜZENLEME</h1>
+        <h1>ÜYE BİLGİSİ DÜZENLEME</h1>
         {loading ? (
           <Loader />
         ) : error.length > 0 ? (

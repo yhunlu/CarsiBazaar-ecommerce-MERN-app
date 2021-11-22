@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./api";
 import axios from "axios";
 
 const slice = createSlice({
