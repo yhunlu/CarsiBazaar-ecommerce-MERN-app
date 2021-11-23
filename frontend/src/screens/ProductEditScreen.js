@@ -7,12 +7,13 @@ import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { loadProductById } from "../store/productDetail";
 import EntryForm from "../components/common/EntryForm";
+import { updateProduct, resetProduct } from "../store/productNew";
 
 const ProductListScreen = ({ match, history }) => {
   const productId = match.params.id;
 
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [brand, setBrand] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
@@ -24,23 +25,46 @@ const ProductListScreen = ({ match, history }) => {
   const productDetail = useSelector((state) => state.entities.productDetail);
   const { loading, error, product } = productDetail;
 
+  const productUpdate = useSelector((state) => state.entities.productNew);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
+
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(loadProductById(productId));
+    if (successUpdate) {
+      dispatch(resetProduct());
+      history.push("/admin/productlist");
     } else {
-      setName(product.name);
-      setPrice(product.price);
-      setBrand(product.brand);
-      setImage(product.image);
-      setCategory(product.category);
-      setDescription(product.description);
-      setCountInStock(product.countInStock);
+      if (!product.name || product._id !== productId) {
+        dispatch(loadProductById(productId));
+      } else {
+        setName(product.name);
+        setPrice(product.price);
+        setBrand(product.brand);
+        setImage(product.image);
+        setCategory(product.category);
+        setDescription(product.description);
+        setCountInStock(product.countInStock);
+      }
     }
-  }, [dispatch, productId, product]);
+  }, [dispatch, history, productId, product, successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch(updateUserEdit({ _id: userId, name, email, isAdmin }));
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        description,
+        countInStock,
+      })
+    );
   };
 
   return (
@@ -53,6 +77,10 @@ const ProductListScreen = ({ match, history }) => {
       </Link>
       <FormContainer className="login">
         <h1>ÜRÜN BİLGİSİ DÜZENLEME</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate.length > 0 && (
+          <Message variant="danger">{errorUpdate}</Message>
+        )}
         {loading ? (
           <Loader />
         ) : error.length > 0 ? (
