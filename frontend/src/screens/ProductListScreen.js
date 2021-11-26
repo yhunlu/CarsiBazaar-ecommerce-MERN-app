@@ -5,9 +5,8 @@ import { Table, Button, Card, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { loadProducts, deleteProductById } from "./../store/products";
+import { loadAllProducts, deleteProductById } from "./../store/products";
 import { createProduct, resetProduct } from "./../store/productNew";
-import { listUsers } from "./../store/userList";
 
 const ProductListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -26,9 +25,6 @@ const ProductListScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.entities.users);
   const { userInfo } = userLogin;
 
-  const usersList = useSelector((state) => state.entities.userList);
-  const { users } = usersList;
-
   useEffect(() => {
     dispatch(resetProduct());
 
@@ -37,8 +33,7 @@ const ProductListScreen = ({ history }) => {
     }
 
     if (userInfo && userInfo.isAdmin) {
-      dispatch(loadProducts());
-      dispatch(listUsers());
+      dispatch(loadAllProducts());
     } else {
       history.push("/login");
     }
@@ -59,14 +54,6 @@ const ProductListScreen = ({ history }) => {
 
   const createProductHandler = () => {
     dispatch(createProduct());
-  };
-
-  // relationship between userList.Id and product.userId
-  // to find user.name associated with product.
-  const findUserById = (id) => {
-    const user = users.filter((user) => user._id === id);
-
-    return user.map((us) => us.name);
   };
 
   return (
@@ -114,7 +101,7 @@ const ProductListScreen = ({ history }) => {
           <tbody>
             {lists.map((list) => (
               <tr key={list._id}>
-                <td>{findUserById(list.user)}</td>
+                <td>{list.user.name}</td>
                 <td>{list._id}</td>
                 <td>{list.name}</td>
                 <td>

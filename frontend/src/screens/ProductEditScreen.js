@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const ProductListScreen = ({ match, history }) => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [countInStock, setCountInStock] = useState(0);
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -50,6 +52,30 @@ const ProductListScreen = ({ match, history }) => {
       }
     }
   }, [dispatch, history, productId, product, successUpdate]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", formData, config);
+
+      setImage(data);
+
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -119,14 +145,32 @@ const ProductListScreen = ({ match, history }) => {
               placeholderTR="Açıklamasını Yaz"
               onChange={(e) => setDescription(e.target.value)}
             />
+            <Form.Group controlId={image}>
+              <Form.Label>Resim</Form.Label>
+              <Form.Control
+                type="text"
+                value={image}
+                placeholder="Resim Yükle"
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <span>
+                <Form.File
+                  id="image-file"
+                  label="Resim Seç"
+                  custom
+                  onChange={uploadFileHandler}
+                ></Form.File>
+                {uploading && <Loader />}
+              </span>
+            </Form.Group>
 
-            <EntryForm
+            {/* <EntryForm
               type="text"
               name={image}
               nameTR="Resim"
               placeholderTR="Resimleri Seç"
               onChange={(e) => setImage(e.target.value)}
-            />
+            /> */}
 
             <EntryForm
               type="number"

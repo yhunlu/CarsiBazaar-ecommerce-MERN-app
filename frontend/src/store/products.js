@@ -59,6 +59,37 @@ export const loadProducts = () => (dispatch, getState) => {
   );
 };
 
+export const loadAllProducts = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: productsRequested.type,
+    });
+
+    const { userInfo } = getState().entities.users;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/products`, config);
+
+    dispatch({
+      type: productsReceived.type,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: productsRequestFailed.type,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const deleteProductById = (id) => async (dispatch, getState) => {
   try {
     dispatch({

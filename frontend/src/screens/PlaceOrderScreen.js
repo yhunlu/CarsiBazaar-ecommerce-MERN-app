@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { createOrder } from "../store/order";
+import { createOrder, orderPayReset } from "../store/order";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -20,6 +20,9 @@ const PlaceOrderScreen = ({ history }) => {
   const shipping = useSelector((state) => state.entities.shipping);
   const payment = useSelector((state) => state.entities.payment);
   const cart = useSelector((state) => state.entities.cartItem);
+
+  const userLogin = useSelector((state) => state.entities.users);
+  const { userInfo } = userLogin;
 
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -39,8 +42,12 @@ const PlaceOrderScreen = ({ history }) => {
   const { lists, success, error } = orderCreate;
 
   useEffect(() => {
-    if (success) {
-      history.push(`/order/${lists._id}`);
+    if (userInfo) {
+      if (userInfo._id === lists.user && success) {
+        history.push(`/order/${lists._id}`);
+      }
+    } else {
+      history.push("/login");
     }
     // eslint-disable-next-line
   }, [history, success]);

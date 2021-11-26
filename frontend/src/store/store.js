@@ -30,6 +30,14 @@ const orderFromStorage = localStorage.getItem("order")
       success: false,
     };
 
+const orderListDetailFromStorage = localStorage.getItem("orderListDetail")
+  ? JSON.parse(localStorage.getItem("orderListDetail"))
+  : {
+      order: { user: [], shippingAddress: [], orderItems: [] },
+      error: [],
+      loading: false,
+    };
+
 const initialState = {
   entities: {
     cartItem: cartItemFromStorage,
@@ -37,6 +45,7 @@ const initialState = {
     payment: { paymentMethod: paymentMethodFromStorage },
     users: { userInfo: userInfoFromStorage },
     order: orderFromStorage,
+    orderListDetail: orderListDetailFromStorage,
   },
 };
 

@@ -10,6 +10,8 @@ import orderReducer from "./order";
 import myOrderListReducer from "./myOrderList";
 import userListReducer from "./userList";
 import productNewReducer from "./productNew";
+import orderListReducer from "./orderList";
+import orderListDetailReducer from "./orderListDetail";
 
 export default combineReducers({
   products: productsReducer,
@@ -23,4 +25,6 @@ export default combineReducers({
   order: orderReducer,
   myOrderList: myOrderListReducer,
   userList: userListReducer,
+  orderList: orderListReducer,
+  orderListDetail: orderListDetailReducer,
 });
