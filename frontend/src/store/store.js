@@ -38,6 +38,12 @@ const orderListDetailFromStorage = localStorage.getItem("orderListDetail")
       loading: false,
     };
 
+const productDetailFromStart = {
+  product: { reviews: [] },
+  error: [],
+  loading: false,
+};
+
 const initialState = {
   entities: {
     cartItem: cartItemFromStorage,
@@ -46,6 +52,7 @@ const initialState = {
     users: { userInfo: userInfoFromStorage },
     order: orderFromStorage,
     orderListDetail: orderListDetailFromStorage,
+    productDetail: productDetailFromStart,
   },
 };
 

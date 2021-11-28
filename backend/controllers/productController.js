@@ -5,7 +5,19 @@ import Product from "../models/productModel.js";
 // @routes GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).populate("user", "id name");
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  const products = await Product.find({ ...keyword }).populate(
+    "user",
+    "id name"
+  );
 
   res.json(products);
 });
@@ -109,7 +121,7 @@ const createReview = asyncHandler(async (req, res) => {
 
     if (alreadyReviewed) {
       res.status(400);
-      throw new Error("Product already reviewed");
+      throw new Error("Ürünü zaten değerlendirmiştin !");
     }
 
     const review = {

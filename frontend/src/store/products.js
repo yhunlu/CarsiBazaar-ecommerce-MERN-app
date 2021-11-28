@@ -48,16 +48,18 @@ export default slice.reducer;
 // Action Creators
 const url = "/products";
 // () => fn (dispatch, getState)
-export const loadProducts = () => (dispatch, getState) => {
-  dispatch(
-    apiCallBegan({
-      url,
-      onStart: productsRequested.type,
-      onSuccess: productsReceived.type,
-      onError: productsRequestFailed.type,
-    })
-  );
-};
+export const loadProducts =
+  (keyword = "") =>
+  (dispatch, getState) => {
+    dispatch(
+      apiCallBegan({
+        url: url + "/?keyword=" + keyword,
+        onStart: productsRequested.type,
+        onSuccess: productsReceived.type,
+        onError: productsRequestFailed.type,
+      })
+    );
+  };
 
 export const loadAllProducts = () => async (dispatch, getState) => {
   try {
