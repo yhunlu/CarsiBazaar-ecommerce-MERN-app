@@ -5,6 +5,9 @@ import Product from "../models/productModel.js";
 // @routes GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 4;
+  const page = Number(req.query.pageNumber) || 1;
+
   const keyword = req.query.keyword
     ? {
         name: {
@@ -14,22 +17,23 @@ const getProducts = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const products = await Product.find({ ...keyword }).populate(
-    "user",
-    "id name"
-  );
+  const count = await Product.count({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .populate("user", "id name")
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
 
-  res.json(products);
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
-// @desc Fetch all products with user-id-name
-// @routes GET /api/products
-// @access Private/Admin
-const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).populate("user", "id name");
+// // @desc Fetch all products with user-id-name
+// // @routes GET /api/products
+// // @access Private/Admin
+// const getAllProducts = asyncHandler(async (req, res) => {
+//   const products = await Product.find({}).populate("user", "id name");
 
-  res.json(products);
-});
+//   res.json(products);
+// });
 
 // @desc Fetch single products
 // @routes GET /api/products/:id
@@ -149,7 +153,7 @@ const createReview = asyncHandler(async (req, res) => {
 
 export {
   getProducts,
-  getAllProducts,
+  // getAllProducts,
   getProductById,
   deleteProduct,
   createProduct,

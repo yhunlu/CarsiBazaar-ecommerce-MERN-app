@@ -6,6 +6,8 @@ const slice = createSlice({
   name: "products",
   initialState: {
     lists: [],
+    pages: [],
+    page: [],
     error: [],
     loading: false,
     success: false,
@@ -19,7 +21,9 @@ const slice = createSlice({
       products.error = action.payload;
     },
     productsReceived: (products, action) => {
-      products.lists = action.payload;
+      products.lists = action.payload.products;
+      products.pages = action.payload.pages;
+      products.page = action.payload.page;
       products.loading = false;
     },
     productDeleteRequested: (products, action) => {
@@ -47,13 +51,12 @@ export default slice.reducer;
 
 // Action Creators
 const url = "/products";
-// () => fn (dispatch, getState)
 export const loadProducts =
-  (keyword = "") =>
+  (keyword = "", pageNumber = "") =>
   (dispatch, getState) => {
     dispatch(
       apiCallBegan({
-        url: url + "/?keyword=" + keyword,
+        url: url + "/?keyword=" + keyword + "&pageNumber=" + pageNumber,
         onStart: productsRequested.type,
         onSuccess: productsReceived.type,
         onError: productsRequestFailed.type,
@@ -61,36 +64,41 @@ export const loadProducts =
     );
   };
 
-export const loadAllProducts = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: productsRequested.type,
-    });
+export const loadAllProducts =
+  (keyword = "", pageNumber = "") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: productsRequested.type,
+      });
 
-    const { userInfo } = getState().entities.users;
+      const { userInfo } = getState().entities.users;
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get(`/api/products`, config);
+      const { data } = await axios.get(
+        `/api/products/?keyword=${keyword}&pageNumber=${pageNumber}`,
+        config
+      );
 
-    dispatch({
-      type: productsReceived.type,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: productsRequestFailed.type,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: productsReceived.type,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: productsRequestFailed.type,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const deleteProductById = (id) => async (dispatch, getState) => {
   try {
