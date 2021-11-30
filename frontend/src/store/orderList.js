@@ -5,6 +5,8 @@ const slice = createSlice({
   name: "orderList",
   initialState: {
     orders: [],
+    pages: [],
+    page: [],
     error: [],
     loading: false,
     success: false,
@@ -18,7 +20,9 @@ const slice = createSlice({
       orderList.error = action.payload;
     },
     orderListReceived: (orderList, action) => {
-      orderList.orders = action.payload;
+      orderList.orders = action.payload.orders;
+      orderList.pages = action.payload.pages;
+      orderList.page = action.payload.page;
       orderList.loading = false;
     },
     orderListDeleteRequested: (orderList, action) => {
@@ -45,36 +49,41 @@ export const {
 export default slice.reducer;
 
 // Action Creators
-export const fetchOrderList = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: orderListRequested.type,
-    });
+export const fetchOrderList =
+  (keyword = "", pageNumber = "") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: orderListRequested.type,
+      });
 
-    const { userInfo } = getState().entities.users;
+      const { userInfo } = getState().entities.users;
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get("/api/orders", config);
+      const { data } = await axios.get(
+        `/api/orders/?keyword=${keyword}&pageNumber=${pageNumber}`,
+        config
+      );
 
-    dispatch({
-      type: orderListReceived.type,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: orderListRequestFailed.type,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: orderListReceived.type,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: orderListRequestFailed.type,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const deleteOrderById = (id) => async (dispatch, getState) => {
   try {

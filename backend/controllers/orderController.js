@@ -112,7 +112,20 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @routes GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({})
+  const pageSize = 2;
+  const page = Number(req.query.pageNumber || 1);
+
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  const count = await Order.count({ ...keyword });
+  const orders = await Order.find({ ...keyword })
     .populate("user", "id name email")
     .populate({
       path: "orderItems",
@@ -125,8 +138,10 @@ const getOrders = asyncHandler(async (req, res) => {
           model: "User",
         },
       },
-    });
-  res.json(orders);
+    })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ orders, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Get order by Id
