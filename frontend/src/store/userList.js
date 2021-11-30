@@ -5,6 +5,8 @@ const slice = createSlice({
   name: "userList",
   initialState: {
     users: [],
+    pages: [],
+    page: [],
     error: [],
     loading: false,
     success: false,
@@ -18,7 +20,9 @@ const slice = createSlice({
       userList.error = action.payload;
     },
     userListReceived: (userList, action) => {
-      userList.users = action.payload;
+      userList.users = action.payload.users;
+      userList.pages = action.payload.pages;
+      userList.page = action.payload.page;
       userList.loading = false;
     },
     userDeleteRequested: (userList, action) => {
@@ -45,36 +49,41 @@ export const {
 export default slice.reducer;
 
 // Action Creators
-export const listUsers = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: userListRequested.type,
-    });
+export const listUsers =
+  (keyword = "", pageNumber = "") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: userListRequested.type,
+      });
 
-    const { userInfo } = getState().entities.users;
+      const { userInfo } = getState().entities.users;
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get("/api/users", config);
+      const { data } = await axios.get(
+        `/api/users/?keyword=${keyword}&pageNumber=${pageNumber}`,
+        config
+      );
 
-    dispatch({
-      type: userListReceived.type,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: userListRequestFailed.type,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: userListReceived.type,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: userListRequestFailed.type,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const deleteUser = (id) => async (dispatch, getState) => {
   try {

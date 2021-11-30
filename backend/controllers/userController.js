@@ -108,9 +108,19 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @routes POST /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const pageSize = 4;
+  const page = Number(req.query.pageNumber) || 1;
 
-  res.json(users);
+  const keyword = req.query.keyword
+    ? { name: { $regex: req.query.keyword, $options: "i" } }
+    : {};
+
+  const count = await User.count({ ...keyword });
+  const users = await User.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({ users, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Delete user
