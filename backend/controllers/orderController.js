@@ -117,10 +117,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
   const keyword = req.query.keyword
     ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
+        _id: req.query.keyword,
       }
     : {};
 
@@ -141,6 +138,7 @@ const getOrders = asyncHandler(async (req, res) => {
     })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
+
   res.json({ orders, page, pages: Math.ceil(count / pageSize) });
 });
 

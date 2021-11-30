@@ -41,6 +41,16 @@ const App = () => {
             component={UserListScreen}
             exact
           />
+          <Route
+            path="/admin/userlist/search/:keyword"
+            component={UserListScreen}
+            exact
+          />
+          <Route
+            path="/admin/userlist/search/:keyword/page/:pageNumber"
+            component={UserListScreen}
+            exact
+          />
           <Route path="/admin/user/:id/edit" component={UserEditScreen} />
           <Route
             path="/admin/productlist"
@@ -49,6 +59,16 @@ const App = () => {
           />
           <Route
             path="/admin/productlist/:pageNumber"
+            component={ProductListScreen}
+            exact
+          />
+          <Route
+            path="/admin/productlist/search/:keyword"
+            component={ProductListScreen}
+            exact
+          />
+          <Route
+            path="/admin/productlist/search/:keyword/page/:pageNumber"
             component={ProductListScreen}
             exact
           />
@@ -62,7 +82,18 @@ const App = () => {
             component={OrderListScreen}
             exact
           />
+          <Route
+            path="/admin/orderlist/search/:keyword"
+            component={OrderListScreen}
+            exact
+          />
+          <Route
+            path="/admin/orderlist/search/:keyword/page/:pageNumber"
+            component={OrderListScreen}
+            exact
+          />
           <Route path="/admin/order/:id" component={OrderListDetailScreen} />
+
           <Route path="/search/:keyword" component={HomeScreen} exact />
           <Route path="/page/:pageNumber" component={HomeScreen} exact />
           <Route

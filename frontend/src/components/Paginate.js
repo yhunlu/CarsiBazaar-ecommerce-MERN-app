@@ -14,6 +14,8 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = "", pageName }) => {
                 ? keyword
                   ? `/search/${keyword}/page/${x + 1}`
                   : `/page/${x + 1}`
+                : keyword
+                ? `/admin/${pageName}/search/${keyword}/page/${x + 1}`
                 : `/admin/${pageName}/${x + 1}`
             }
           >

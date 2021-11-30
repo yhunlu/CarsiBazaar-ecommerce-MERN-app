@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Modal } from "react-bootstrap";
+import { Table, Button, Modal, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listUsers, deleteUser } from "./../store/userList";
 import Paginate from "../components/Paginate";
+import SearchBoxAdminControl from "../components/SearchBoxAdminControl";
 
 const UserListScreen = ({ history, match }) => {
+  const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
@@ -27,11 +29,11 @@ const UserListScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(listUsers("", pageNumber));
+      dispatch(listUsers(keyword, pageNumber));
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successDelete, pageNumber]);
+  }, [dispatch, history, userInfo, successDelete, keyword, pageNumber]);
 
   const deleteHandler = (id) => {
     if (window.confirm(`${id} Silmek istediğinden emin misin?`)) {
@@ -41,6 +43,15 @@ const UserListScreen = ({ history, match }) => {
 
   return (
     <>
+      <Row>
+        <Col className="text-right">
+          <SearchBoxAdminControl
+            history={history}
+            pageName="userlist"
+            tagname="Müşteri Ara..."
+          />
+        </Col>
+      </Row>
       <h1>Kullanıcılar</h1>
       {loading ? (
         <Loader />
@@ -104,6 +115,7 @@ const UserListScreen = ({ history, match }) => {
             pages={pages}
             isAdmin={true}
             pageName="userlist"
+            keyword={keyword ? keyword : ""}
           />
         </>
       )}

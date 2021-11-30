@@ -116,7 +116,7 @@ const getUsers = asyncHandler(async (req, res) => {
     : {};
 
   const count = await User.count({ ...keyword });
-  const users = await User.find({})
+  const users = await User.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 

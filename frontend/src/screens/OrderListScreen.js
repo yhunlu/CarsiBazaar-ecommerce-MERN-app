@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
-import { Table, Button, Card } from "react-bootstrap";
+import { Table, Button, Card, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { fetchOrderList, deleteOrderById } from "./../store/orderList";
 import Paginate from "../components/Paginate";
+import SearchBoxAdminControl from "../components/SearchBoxAdminControl";
 
 const OrderListScreen = ({ history, match }) => {
+  const keyword = match.params.keyword;
+
   const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
@@ -28,11 +31,11 @@ const OrderListScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(fetchOrderList("", pageNumber));
+      dispatch(fetchOrderList(keyword, pageNumber));
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successDelete, pageNumber]);
+  }, [dispatch, history, userInfo, successDelete, keyword, pageNumber]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Silmek istediğinden emin misin?")) {
@@ -42,6 +45,15 @@ const OrderListScreen = ({ history, match }) => {
 
   return (
     <>
+      <Row>
+        <Col className="text-right">
+          <SearchBoxAdminControl
+            history={history}
+            pageName="orderlist"
+            tagname="Sipariş ID Ara..."
+          />
+        </Col>
+      </Row>
       <h1>SİPARİŞLER</h1>
       {loading ? (
         <Loader />
@@ -179,6 +191,7 @@ const OrderListScreen = ({ history, match }) => {
             pages={pages}
             isAdmin={true}
             pageName="orderlist"
+            keyword={keyword ? keyword : ""}
           />
         </>
       )}

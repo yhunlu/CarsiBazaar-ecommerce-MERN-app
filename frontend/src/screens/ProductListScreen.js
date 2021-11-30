@@ -8,8 +8,10 @@ import Loader from "../components/Loader";
 import { loadAllProducts, deleteProductById } from "./../store/products";
 import { createProduct, resetProduct } from "./../store/productNew";
 import Paginate from "../components/Paginate";
+import SearchBoxAdminControl from "./../components/SearchBoxAdminControl";
 
 const ProductListScreen = ({ history, match }) => {
+  const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
@@ -43,7 +45,7 @@ const ProductListScreen = ({ history, match }) => {
     }
 
     if (userInfo && userInfo.isAdmin) {
-      dispatch(loadAllProducts("", pageNumber));
+      dispatch(loadAllProducts(keyword, pageNumber));
     } else {
       history.push("/login");
     }
@@ -54,6 +56,7 @@ const ProductListScreen = ({ history, match }) => {
     createdProduct._id,
     successCreate,
     successDelete,
+    keyword,
     pageNumber,
   ]);
 
@@ -72,12 +75,19 @@ const ProductListScreen = ({ history, match }) => {
       <Row>
         <Col className="text-right">
           <Button
-            className="btn btn-md btn-outline-warning my-3"
+            className="btn btn-md btn-outline-warning"
             variant="light"
             onClick={createProductHandler}
           >
             <i className="fas fa-plus"></i> Ürün Ekle
           </Button>
+        </Col>
+        <Col className="text-right">
+          <SearchBoxAdminControl
+            history={history}
+            pageName="productlist"
+            tagname="Ürün Ara..."
+          />
         </Col>
       </Row>
       <h1>ÜRÜNLER</h1>
@@ -168,6 +178,7 @@ const ProductListScreen = ({ history, match }) => {
             pages={pages}
             isAdmin={true}
             pageName="productlist"
+            keyword={keyword ? keyword : ""}
           />
         </>
       )}
