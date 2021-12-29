@@ -13,6 +13,7 @@ import productNewReducer from "./productNew";
 import orderListReducer from "./orderList";
 import orderListDetailReducer from "./orderListDetail";
 import productReviewReducer from "./productReview";
+import productTopReducer from "./productTop";
 
 export default combineReducers({
   products: productsReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   orderList: orderListReducer,
   orderListDetail: orderListDetailReducer,
   productReview: productReviewReducer,
+  productTop: productTopReducer,
 });
