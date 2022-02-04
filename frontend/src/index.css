@@ -141,9 +141,10 @@ h4 {
 .carousel-caption {
   position: absolute;
   top: 0;
+  margin: -20px auto;
 }
 .carousel-caption h2 {
-  color: #000000;
+  color: #f0f8ff;
 }
 
 .carousel img {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Row,
   Col,
@@ -6,14 +6,14 @@ import {
   Image,
   Card,
   ListGroupItem,
-} from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import StripeCheckout from "react-stripe-checkout";
-import axios from "axios";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import { getOrderDetails, updateOrderPay, orderPayReset } from "../store/order";
+} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import StripeCheckout from 'react-stripe-checkout';
+import axios from 'axios';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { getOrderDetails, updateOrderPay, orderPayReset } from '../store/order';
 
 const OrderScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -29,12 +29,12 @@ const OrderScreen = ({ match, history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      history.push('/login');
     }
   }, [history, userInfo]);
 
   const handleToken = async (token) => {
-    const response = await axios.post("/api/config/stripe", { token, order });
+    const response = await axios.post('/api/config/stripe', { token, order });
     const { status } = response.data;
 
     // console.log(response);
@@ -43,7 +43,7 @@ const OrderScreen = ({ match, history }) => {
   };
 
   const stripeSuccess = (status, data) => {
-    if (status === "success") {
+    if (status === 'success') {
       dispatch(updateOrderPay(match.params.id, data));
     } else {
       dispatch(updateOrderPay(match.params.id, data));
@@ -75,17 +75,17 @@ const OrderScreen = ({ match, history }) => {
             <ListGroupItem>
               <h2>Adres Bilgilerim</h2>
               <p>
-                <strong>İsim: </strong> {order.user.name}
+                <strong>İsim: </strong> {order.user?.name}
               </p>
               <p>
-                <strong>Email: </strong>{" "}
-                <a href={`mailto:${order.user.name}`}>{order.user.email}</a>
+                <strong>Email: </strong>{' '}
+                <a href={`mailto:${order.user?.name}`}>{order.user?.email}</a>
               </p>
               <p>
                 <strong>Adres: </strong>
-                {order.shippingAddress.address},{" "}
-                {order.shippingAddress.postalCode}, {order.shippingAddress.city}
-                /{order.shippingAddress.country}
+                {order.shippingAddress?.address},{' '}
+                {order.shippingAddress?.postalCode},{' '}
+                {order.shippingAddress?.city}/{order.shippingAddress?.country}
               </p>
               {order.isPaid &&
                 (order.isDelivered ? (
@@ -114,11 +114,11 @@ const OrderScreen = ({ match, history }) => {
             </ListGroupItem>
             <ListGroupItem>
               <h2>Sipariş Listesi</h2>
-              {order.orderItems.length === 0 ? (
+              {order.orderItems?.length === 0 ? (
                 <Message>Sepetin boş !</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {order.orderItems.map((item, index) => (
+                  {order.orderItems?.map((item, index) => (
                     <ListGroupItem key={index}>
                       <Row>
                         <Col md={1}>
@@ -135,7 +135,7 @@ const OrderScreen = ({ match, history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} TL = {item.qty * item.price}{" "}
+                          {item.qty} x {item.price} TL = {item.qty * item.price}{' '}
                           TL
                         </Col>
                       </Row>
@@ -190,7 +190,7 @@ const OrderScreen = ({ match, history }) => {
                     amount={order.totalPrice * 100}
                     currency="TRY"
                     name={order._id}
-                    email={order.user.email}
+                    email={order.user?.email}
                   />
                 </ListGroupItem>
               )}
