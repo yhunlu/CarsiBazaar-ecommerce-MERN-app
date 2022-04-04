@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Col,
   Row,
@@ -10,22 +10,22 @@ import {
   ListGroupItem,
   Image,
   Form,
-} from "react-bootstrap";
-import Rating from "../components/Rating";
-import { loadProductById } from "../store/productDetail";
+} from 'react-bootstrap';
+import Rating from '../components/Rating';
+import { loadProductById } from '../store/productDetail';
 import {
   createProductReview,
   productReviewReset,
-} from "../store/productReview";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import EntryForm from "../components/common/EntryForm";
+} from '../store/productReview';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import EntryForm from '../components/common/EntryForm';
 
 const ProductScreen = ({ history, match }) => {
   var [qty, setQty] = useState(1);
 
-  const [rating, setRating] = useState("");
-  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState('');
+  const [comment, setComment] = useState('');
 
   const dispatch = useDispatch();
 
@@ -44,9 +44,9 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (successReview) {
-      alert("Review Submitted");
+      alert('Review Submitted');
       setRating(0);
-      setComment("");
+      setComment('');
       dispatch({ type: productReviewReset.type });
     }
     dispatch(loadProductById(match.params.id));
@@ -102,7 +102,7 @@ const ProductScreen = ({ history, match }) => {
                     <Row>
                       <Col as="h5">Fiyat:</Col>
                       <Col>
-                        <span className="badge bg-info">
+                        <span>
                           <h5>{product.price} TL </h5>
                         </span>
                       </Col>
@@ -113,11 +113,11 @@ const ProductScreen = ({ history, match }) => {
                       <Col as="h5">Durum:</Col>
                       <Col>
                         {product.countInStock > 0 && (
-                          <span className="badge bg-warning">
+                          <span>
                             <h5>
                               {product.countInStock > 0
-                                ? "Stokta"
-                                : "Stokta Yok"}
+                                ? 'Stokta'
+                                : 'Stokta Yok'}
                             </h5>
                           </span>
                         )}
@@ -125,8 +125,8 @@ const ProductScreen = ({ history, match }) => {
                           <span className="badge bg-danger">
                             <h5>
                               {product.countInStock > 0
-                                ? "Stokta"
-                                : "Stokta Yok"}
+                                ? 'Stokta'
+                                : 'Stokta Yok'}
                             </h5>
                           </span>
                         )}
@@ -184,7 +184,7 @@ const ProductScreen = ({ history, match }) => {
                       <Rating value={review.rating} />
                       <p>
                         {review.createdAt.substring(0, 10) +
-                          " - " +
+                          ' - ' +
                           review.createdAt.substring(12, 19)}
                       </p>
                       <p>{review.comment}</p>

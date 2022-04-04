@@ -27,75 +27,63 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <Navbar
-        className="navbar navbar-expand-lg navbar-dark bg-dark"
-        expand="sm"
-        collapseOnSelect
-      >
-        <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand href="/">
-              <img src={logo} alt="logo" width="150px" height="100px" />
-            </Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav
-              className="me-auto my-2 my-sm-0"
-              style={{ maxHeight: '70px' }}
-              navbarScroll
-            >
-              <LinkContainer to="/cart">
-                <Nav.Link>
-                  <span
-                    className="p1 fa-stack fa-2x has-badge"
-                    data-count={Items.length > 0 ? Items.length : 0}
-                  >
-                    <i className="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse"></i>
-                  </span>
-                </Nav.Link>
-              </LinkContainer>
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id="username">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item onClick={logoutUserDetails}>
-                      Profilim
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Çıkış
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link href="/login">
-                    <i className="fas fa-user fa-2x"></i> Giriş Yap
-                  </Nav.Link>
-                </LinkContainer>
-              )}
-              {userInfo && userInfo.isAdmin && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userlist">
-                    <NavDropdown.Item>Kullanıcılar</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Ürünler</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Siparişler</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              )}
-            </Nav>
-            <Route render={({ history }) => <SearchBox history={history} />} />
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </header>
+    <Navbar bg="dark" expand="lg" variant="dark">
+      <Container fluid>
+        <Navbar.Brand href="/">
+          <img src={logo} alt="logo" width="150px" height="100px" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav
+            className="me-auto my-2 my-lg-0"
+            style={{ maxHeight: '100px' }}
+            navbarScroll
+          >
+            <Nav.Link href="/cart">
+              <span
+                className="p1 fa-stack fa-2x has-badge"
+                data-count={Items.length > 0 ? Items.length : 0}
+                style={{ margin: '0 0 0 200px' }}
+              >
+                <i className="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse"></i>
+              </span>
+            </Nav.Link>
+            {userInfo ? (
+              <NavDropdown title={userInfo.name} id="username">
+                <NavDropdown.Item href="/profile" onClick={logoutUserDetails}>
+                  Profilim
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logoutHandler}>
+                  Çıkış
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Nav.Link href="/login">
+                <i className="fas fa-user fa-2x"></i>
+                Giriş Yap
+              </Nav.Link>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <NavDropdown title="Admin" id="adminmenu">
+                <NavDropdown.Item href="/admin/userlist">
+                  Kullanıcılar
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/admin/productlist">
+                  Ürünler
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/admin/orderlist">
+                  Siparişler
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
+          </Nav>
+          <Route render={({ history }) => <SearchBox history={history} />} />
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
