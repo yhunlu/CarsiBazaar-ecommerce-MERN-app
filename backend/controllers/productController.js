@@ -26,15 +26,6 @@ const getProducts = asyncHandler(async (req, res) => {
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
-// // @desc Fetch all products with user-id-name
-// // @routes GET /api/products
-// // @access Private/Admin
-// const getAllProducts = asyncHandler(async (req, res) => {
-//   const products = await Product.find({}).populate("user", "id name");
-
-//   res.json(products);
-// });
-
 // @desc Fetch single products
 // @routes GET /api/products/:id
 // @access Public
@@ -164,7 +155,6 @@ const getTopProducts = asyncHandler(async (req, res) => {
 
 export {
   getProducts,
-  // getAllProducts,
   getProductById,
   deleteProduct,
   createProduct,
