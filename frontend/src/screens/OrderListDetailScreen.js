@@ -10,13 +10,10 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import StripeCheckout from "react-stripe-checkout";
-import axios from "axios";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import {
   getOrderListDetailById,
-  ResetOrderListDetail,
   updateDelivery,
 } from "../store/orderListDetail";
 
@@ -32,7 +29,6 @@ const OrderListDetailScreen = ({ match, history }) => {
     error,
     success: successDeliver,
     loadingDeliver,
-    errorDeliver,
   } = orderDetail;
 
   const users = useSelector((state) => state.entities.users);

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
-import { createOrder, orderPayReset } from "../store/order";
+import { createOrder } from "../store/order";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();

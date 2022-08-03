@@ -70,7 +70,7 @@ const ProductScreen = ({ history, match }) => {
       <Link className="btn btn-md btn-outline-primary my-3" to="/">
         <strong>Geri Git</strong>
       </Link>
-      {loading ? (
+      {loading || loadingReview ? (
         <Loader />
       ) : error.length > 0 ? (
         <Message variant="danger">{error}</Message>
